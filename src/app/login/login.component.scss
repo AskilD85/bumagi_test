@@ -1,0 +1,124 @@
+/* Font */
+$roboto-regular-medium: 400 14px/30px Roboto,sans-serif;
+$roboto-regular-large: 400 21px/30px Roboto,sans-serif;
+$roboto-light-medium: 300 14px/30px Roboto,sans-serif;
+$roboto-light-xs: 300 9px/11px Roboto,sans-serif;
+$font-label: 400 14px/19px Roboto,sans-serif;
+
+$inter-regular-medium: 400 14px/30px Inter,sans-serif;
+$inter-regular-large: 400 21px/30px Inter,sans-serif;
+$inter-light-medium: 300 14px/30px Inter,sans-serif;
+$inter-light-xs: 300 9px/11px Inter,sans-serif;
+$inter-label: 400 14px/19px Inter,sans-serif;
+
+
+/* Color */
+$white: #fff;
+$blue: #22A4DC;
+$light-blue: #7AC8EA;
+$link: #888EA7;
+$link-active: #313643;
+$danger: #E63782;
+
+/* Border */
+$border-form: 1px solid #E6ECF5;
+$border-input: 2px solid #E6ECF5;
+
+
+.main {
+ padding: 50px;
+ position: fixed;
+ top: 50%;
+ left: 50%;
+ -webkit-transform: translate(-50%, -50%);
+ -ms-transform: translate(-50%, -50%);
+ transform: translate(-50%, -50%);
+}
+
+.loginForm{
+   margin: auto;
+   border-radius: 10px;
+   opacity: 1;
+  //  position: absolute;
+   margin-bottom: 30%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+input, button {
+  width: 240px;
+  height: 48px;
+  border: 1px solid #ECEBED;
+  border-radius: 6px;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* Параметры тени */
+}
+
+button {
+  background-color: #6979F8;
+  color: white;
+  font-size: 17px;
+  font-family: $inter-label;
+}
+
+input:hover {
+  border: 2px solid #6979F8;
+  position: relative;
+}
+
+input:focus {
+  border: 2px solid #6979F8 !important;
+  border-radius: 0px !important;
+}
+
+input.ng-touched {
+  border: 2px solid #6979F8 ;
+  border-radius: 0px ;
+}
+
+input.ng-invalid.ng-touched {
+  border: 2px solid red;
+}
+
+.validation {
+  color: red;
+  text-align: left;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+
+/*глазик для пароля*/
+.password {
+  position: relative;
+}
+a {
+  fill:#6979F8
+}
+.password-control {
+  position: absolute;
+  top: 14px;
+  right: 10px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+ 	// background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+}
+
+.password-control.view {
+	background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+}
+
+.password-control:hover {
+  cursor: pointer;
+}
+
+.error_text {
+  color: red;
+}
