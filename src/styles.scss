@@ -1,7 +1,88 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+/*----переменные----*/
+$width: 1344px;
+/*---/переменые----*/
+
+
+html, body { height: 100%;
+background-color: #F7F7F7 !important;
+}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.mat-tab-group {
+  margin-bottom: 48px;
+  margin: auto !important;
+  max-width: $width !important;
+  font-family: 'Inter' !important;
+
+}
+
+.mat-tab-label-active {
+  .mat-tab-label-content {
+    color: #000 !important;
+     font-weight: 500;
+  }
+}
+
+.mat-tab-label-content {
+  color: #D0C9D6;
+  font-family: "Inter";
+}
+
+.mat-ink-bar {
+  background-color: #6979F8 !important;
+  height: 5px !important;
+  border-radius: 5px 5px 0 0;
+}
+
+.mat-tab-label {
+  width: auto !important;
+  min-width: 0px !important;
+}
+
+.mat-tab-body {
+  margin-top: 48px !important;
+  position: absolute;
+}
+.mat-form-field-infix {
+  padding: 0 !important;
+  border-top: 0 !important;
+}
+
+.mat-dialog-container {
+  padding: 0px !important;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #fff;
+}
+
+
+@font-face {
+  // название шрифта(чтобы не запутаться лучше указать название папки со шрифтом)
+  font-family: "Inter";
+  // адрес шрифта и тип
+  src: url("./assets/fonts/Inter/static/Inter-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  // название шрифта(чтобы не запутаться лучше указать название папки со шрифтом)
+  font-family: "Inter-medium";
+  // адрес шрифта и тип
+  src: url("./assets/fonts/Inter/static/Inter-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { HttpService } from './../services/http.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer,
-              private httpService: HttpService) {
+              private httpService: HttpService,
+              private router: Router) {
     iconRegistry.addSvgIcon('view-password', sanitizer.bypassSecurityTrustResourceUrl('../../assets/view.svg'));
     iconRegistry.addSvgIcon('no-view-password', sanitizer.bypassSecurityTrustResourceUrl('../../assets/no-view.svg'));
   }
@@ -35,14 +37,20 @@ export class LoginComponent implements OnInit {
 
   sendForm(){
     console.log(this.loginForm.value);
+
     this.error_text =''
-    this.httpService.auth(this.loginForm.value).subscribe({
+
+    // фейк данные на время теста
+    localStorage.setItem('account', JSON.stringify({ login: this.loginForm.value.login, token: 'Authorization token'}))
+    this.router.navigate(['users'])
+/*
+    this.httpService.login(this.loginForm.value).subscribe({
       next: (data) => { console.log(data), this.loginForm.reset() },
       error: (err) => {console.log(err.error.message), this.error_text = err.error.message},
 
-    })
+    })*/
 
-        // this.loginForm.reset()
+
   }
 
 

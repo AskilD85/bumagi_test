@@ -1,0 +1,43 @@
+<div>
+<div class="d-header container-fluid">
+    <div class="row mat-d-title"  mat-dialog-title>
+      <div class="col title-text">Иванов Иван{{data.fname}}  {{data.name}}</div>
+      <div class="col close">
+        <span class="close-icon">
+          <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="onNoClick()">close</mat-icon>
+        </span>
+      </div>
+    </div>
+  </div>
+
+<div mat-dialog-content class="mat-d-content ">
+
+  <form [formGroup]="form" (ngSubmit)="saveUserForm(form.value)">
+    <div class="input-div wrapper ">
+      <input mat-input  class=" col form-control d-input"  formControlName = "name" type="text">
+      <input mat-input class="col form-control d-input" formControlName = "fname" type="text">
+      <input mat-input class=" col form-control d-input" formControlName = "mname" type="text">
+      <div  mat-input class="col form-control d-input" >
+         <mat-form-field appearance="fill" >
+          <mat-select  name="food" formControlName = "status">
+            <mat-option *ngFor="let item of status" [value]="item.value">
+              {{item.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+<div class="footer">
+  <div class="save-button2">
+    <button class="btn save-button"   type="submit" [mat-dialog-close]="form.value" >Сохранить</button>
+  </div>
+</div>
+
+
+
+</div>

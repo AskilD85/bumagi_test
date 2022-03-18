@@ -1,0 +1,48 @@
+<div class="header">
+
+  <mat-tab-group    mat-align-tabs="start" (selectedTabChange)="selectTab($event)">
+  <mat-tab label="Все">
+    <div class="card " *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" (click)="openDialog(item)">
+      <div class="card-body  ">
+        <div class="container-fluid">
+          <div class="row ">
+              <div class="col content">
+                <div class="row ">
+                  <div class="">
+                  <span class="sp-item">Фото</span>
+                  <span class="sp-item">Иванов П.Ф.</span>
+                  <span class="sp-item">Баланс: {{user.balance}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+              <div class="row text-align-right">
+                <div class="col"><span class="sp-text">Последнее изменение:{{user.last_update}}</span></div>
+                <div class="col">
+                  <span class="sp-item">{{user.status}}</span>
+                </div>
+              </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Заблокированные">
+    <div class="card">
+      <div class="card-body">
+        This is some text within a card body.
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Активные">
+    <div class="card">
+      <div class="card-body">
+        This is some text within a card body.
+      </div>
+    </div></mat-tab>
+
+</mat-tab-group>
