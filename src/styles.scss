@@ -84,5 +84,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: normal;
 }
 
+.spinner {
+  position: fixed !important;
+  left: 50% !important;
+  top: 40% !important;
+  z-index: 99999999999999 !important;
+  transform: translate(-50%, -90%) !important;
+}
+
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
