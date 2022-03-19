@@ -30,4 +30,11 @@ export class HttpService {
     }
     return this.http.get(`${this.url}/users?status=${status}`)
   }
+
+  updateUser(data:any) {
+    const headers = new HttpHeaders({});
+    const formData: FormData = new FormData();
+    formData.append('body', JSON.stringify(data));
+    return this.http.patch(`${this.url}/users/${data.id}`, formData);
+  }
 }
