@@ -35,7 +35,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-ink-bar {
   background-color: #6979F8 !important;
-  height: 5px !important;
+  height: 3px !important;
   border-radius: 5px 5px 0 0;
 }
 
@@ -92,6 +92,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: translate(-50%, -90%) !important;
 }
 
-
+.cdk-overlay-dark-backdrop{
+  background: rgba(63, 51, 86, 0.4);
+}
+.mat-dialog-container {
+  border-radius: 12px !important;
+}
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
