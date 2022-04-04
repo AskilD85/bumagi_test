@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { HttpService } from './../services/http.service';
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -21,7 +25,7 @@ export class LoginComponent implements OnInit {
   }
   svg_variable = 'view-password';
   type_text = 'password';
-  error_text!: string
+  error_text!: string;
 
   loginForm:FormGroup = new FormGroup({
     login: new FormControl('test@example.com', Validators.required),
@@ -36,27 +40,17 @@ export class LoginComponent implements OnInit {
   }
 
   sendForm(){
-    console.log(this.loginForm.value);
-
     this.error_text =''
-
-    // фейк данные на время теста
-    localStorage.setItem('account', JSON.stringify({ login: this.loginForm.value.login, token: 'Authorization token'}))
-    this.router.navigate(['users'])
-/*
-    this.httpService.login(this.loginForm.value).subscribe({
-      next: (data) => { console.log(data), this.loginForm.reset() },
+    this.httpService.login(this.loginForm).subscribe({
+      next: () => {
+        this.loginForm.reset(),
+        this.router.navigate(['users']) },
       error: (err) => {console.log(err.error.message), this.error_text = err.error.message},
 
-    })*/
-
-
+    })
   }
 
-
-
-
-
+  /** кнопка  показать/скрыть пароль */
  show_hide_password() {
 
   if (this.svg_variable === 'view-password') {
