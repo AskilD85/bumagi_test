@@ -3,12 +3,12 @@ export class User {
   name: string;
   fname: string;
   mname:string;
-  status:Status;
+  status:number;
   foto_url?: string;
   full_name?:string;
   balance?:string|number;
   last_update?:string;
-  constructor (id:number,name:string,fname:string,mname:string,status: Status) {
+  constructor (id:number,name:string,fname:string,mname:string,status: number) {
     this.id = id;
     this.name = name;
     this.fname=fname;
@@ -17,7 +17,3 @@ export class User {
   }
 }
 
-export class Status {
-  id?: number;
-  value?: string
-}
