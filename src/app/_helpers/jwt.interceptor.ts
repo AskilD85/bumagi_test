@@ -7,17 +7,16 @@ import { environment } from './../../environments/environment';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private httpService: HttpService) { }
+  constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    let account = JSON.parse(localStorage.getItem('account')!)
-    const isLoggedIn = account?.token;
-    const isApiUrl = request.url.startsWith(environment.apiUrl);
+    let isLoggedIn = localStorage.getItem('token')
+    let isApiUrl = request.url.startsWith(environment.apiUrl);
 
     if (isLoggedIn && isApiUrl) {
       request = request.clone({
-        setHeaders: { Authorization: `Bearer ${account.token}` }
+        setHeaders: { Authorization: `${isLoggedIn}` }
       });
     }
 
