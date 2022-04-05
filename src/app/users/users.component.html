@@ -1,52 +1,42 @@
 <div class="header">
 
-  <mat-tab-group  *ngIf="fakeUsers.length > 0; else loading"  mat-align-tabs="start" (selectedTabChange)="selectTab($event)">
-  <mat-tab label="Все">
-    <div class="card " *ngFor="let user of fakeUsers" (click)="openDialog(user)">
-      <div class="card-body  ">
-        <div class="container-fluid">
-          <div class="row ">
-              <div class="col content">
-                <div class="row ">
-                  <div class="">
-                  <span class="sp-item">Фото</span>
-                  <span class="sp-item">{{user.full_name}}</span>
-                  <span class="sp-item">Баланс: {{user.balance}}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-              <div class="row text-align-right">
-                <div class="col"><span class="sp-text">Последнее изменение:{{user.last_update}}</span></div>
-                <div class="col">
-                  <span class="sp-item">{{status[user?.status?.id!].value}}</span>
-                </div>
-              </div>
-              </div>
-
+  <mat-tab-group
+    mat-align-tabs="start"
+    (selectedTabChange)="selectTab($event)"
+  >
+  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+      <div *ngIf="fakeUsers.length > 0 && showSpinner === false;">
+      <div class="card " *ngFor="let user of fakeUsers" (click)="openDialog(user)">
+        <div class="card-body">
+          <div class="card_left-area">
+            <div class="ava-div">
+              <img src="../../assets/avatars/ava.png" alt="avatar" class="avatar">
+            </div>
+            <div class="sp-item">{{user.fname | titlecase}} {{user.name[0] | titlecase}}.{{user.mname[0] | titlecase }}.</div>
+            <div class="sp-item">Баланс: {{user.balance}}</div>
           </div>
+
+          <div class=" card_right-area">
+              <div class="sp-text">Последнее изменение:{{user.last_update}}</div>
+              <div class="sp-item">{{status[user!.status].value}}</div>
+          </div>
+
         </div>
       </div>
     </div>
   </mat-tab>
-
-  <mat-tab label="Заблокированные">
-    <div class="card">
-      <div class="card-body">
-        Заблокированные
-      </div>
-    </div>
-  </mat-tab>
-
-  <mat-tab label="Активные">
-    <div class="card">
-      <div class="card-body">
-        Активные
-      </div>
-    </div></mat-tab>
-
 </mat-tab-group>
 
-<ng-template #loading>
-  <mat-spinner class="spinner" aria-hidden="true" [diameter]="40"></mat-spinner>
-</ng-template>
+ <div class="box spinner" *ngIf="showSpinner" >
+			<div class="loader6"></div>
+		</div>
+
+<div  class="errorMsg" *ngIf="errorMsg && fakeUsers.length === 0">
+  <div class="error-icon">
+    <mat-icon class="close-icon2" aria-hidden="false"  aria-label="icon">close</mat-icon>
+  </div>
+  <div class="error-text">{{errorMsg}}</div>
+</div>
+
+
+
