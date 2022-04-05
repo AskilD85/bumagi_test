@@ -96,7 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                     this.getUsers(param)}
                   , 5000)
             } else {
-              this.fakeUsers = data;
+              this.fakeUsers = data.sort( (a: any,b: any) => a.id < b.id ? 1 : -1);
               this.errorMsg = '';
               this.showSpinner = false;
               this.firstTimeCall === 1;
