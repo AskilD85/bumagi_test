@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Injectable, EventEmitter } from '@angular/core';
+import { Component, Inject, OnInit, Injectable, EventEmitter, OnDestroy } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HttpService } from '../services/http.service';
@@ -11,9 +11,10 @@ import { BehaviorSubject, interval, Subscription } from 'rxjs';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService, public dialog: MatDialog) { }
+
 
   users: User[] = [
     { id:1, foto_url: '', full_name: 'Иванов П.Ф.',name: 'Иван', fname: 'Иванов', mname: 'Петрович', balance: '1234.5', last_update: '10 секунд назад', status: 0},
@@ -34,6 +35,7 @@ export class UsersComponent implements OnInit {
   usersParam: number | null = null;
   fakeUsers: User[] = [];
   sInterval! :Subscription;
+  sOpenDialog!: Subscription;
   showSpinner = false;
   selectedTab:number = 0;
   tabs = ['Все', 'Заблокированные', 'Активные'];
@@ -45,7 +47,7 @@ export class UsersComponent implements OnInit {
     this.showSpinner = true;
     // this.fakeUsers = this.users;
 
-    this.isOpenDial.subscribe(
+    this.sOpenDialog = this.isOpenDial.subscribe(
       (data) => {
         if (data === true) {
           this.stopUpdate()
@@ -55,6 +57,16 @@ export class UsersComponent implements OnInit {
         }
       }
     )
+  }
+
+  ngOnDestroy(): void {
+    if (this.sInterval) {
+      this.sInterval.unsubscribe()
+    }
+
+    if (this.sOpenDialog) {
+      this.sOpenDialog.unsubscribe()
+    }
   }
 
   getUsersInterval() {
