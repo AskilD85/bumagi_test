@@ -4,7 +4,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { HttpService } from '../services/http.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '../model/User';
-import { BehaviorSubject, interval, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, map, Subscription, debounceTime } from 'rxjs';
 @Injectable({ providedIn: 'root'})
 @Component({
   selector: 'app-users',
@@ -17,10 +17,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
   users: User[] = [
-    { id:1, foto_url: '', full_name: 'Иванов П.Ф.',name: 'Иван', fname: 'Иванов', mname: 'Петрович', balance: '1234.5', last_update: '10 секунд назад', status: 0},
-    { id: 2, foto_url: '', full_name: 'Петров П.Ф.', name: 'иван', fname: 'Петров', mname: 'Петрович1', balance: '1234.5', last_update: '10 секунд назад', status:  0  },
-    { id: 3, foto_url: '', full_name: 'Сидоров П.Ф.', name: 'Иван2', fname: 'Сидоров', mname: 'Петрович1', balance: '1234.5', last_update: '10 секунд назад', status:  0  },
-    { id: 4, foto_url: '', full_name: 'Жеглов П.Ф.', name: 'глеб', fname: 'Жеглов', mname: 'Петрович1', balance: '1234.5', last_update: '10 секунд назад', status:  2 },
+    { id: 1, foto_url: '', full_name: 'Иванов П.Ф.', name: 'Иван', fname: 'Иванов', mname: 'Петрович', balance: '1234.5', lastUpdatedAt: '10 секунд назад', status: 0},
+    { id: 2, foto_url: '', full_name: 'Петров П.Ф.', name: 'иван', fname: 'Петров', mname: 'Петрович1', balance: '1234.5', lastUpdatedAt: '10 секунд назад', status:  0  },
+    { id: 3, foto_url: '', full_name: 'Сидоров П.Ф.', name: 'Иван2', fname: 'Сидоров', mname: 'Петрович1', balance: '1234.5', lastUpdatedAt: '10 секунд назад', status:  0  },
+    { id: 4, foto_url: '', full_name: 'Жеглов П.Ф.', name: 'глеб', fname: 'Жеглов', mname: 'Петрович1', balance: '1234.5', lastUpdatedAt: '10 секунд назад', status:  2 },
   ]
   status = [
     { id: 0, value: 'Подписка активна' },
@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     statusControl : new FormControl(this.status[0].value)
   });
+  user$: EventEmitter<User[]> = new EventEmitter();
   usersParam: number | null = null;
   fakeUsers: User[] = [];
   sInterval! :Subscription;
@@ -45,7 +46,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.showSpinner = true;
-    // this.fakeUsers = this.users;
+
+    // this.user$.subscribe((data) => this.fakeUsers = data)
 
     this.sOpenDialog = this.isOpenDial.subscribe(
       (data) => {
@@ -83,6 +85,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   getUsers(param: number | null){
     this.errorMsg = '';
     // this.fakeUsers = this.users;
+    console.log('param', param);
+
     this.httpService.getUsers(param)
     .subscribe({
            next: (data: any) => {
@@ -96,11 +100,13 @@ export class UsersComponent implements OnInit, OnDestroy {
                     this.getUsers(param)}
                   , 5000)
             } else {
-              this.fakeUsers = data.sort( (a: any,b: any) => a.id < b.id ? 1 : -1);
+              this.fakeUsers = data.sort( (a: any, b: any) => a.id < b.id ? 1 : -1);
+              // this.user$.emit(data.sort((a: any, b: any) => a.id < b.id ? 1 : -1));
+              // this.fakeUsers = this.users;
+
               this.errorMsg = '';
               this.showSpinner = false;
               this.firstTimeCall === 1;
-
               if (!this.sInterval || this.sInterval.closed ) {
                 this.getUsersInterval()
               }
@@ -174,6 +180,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 })
 export class DialogUser {
   status = this.userComponent.status;
+  FormData: any;
   form : FormGroup = new FormGroup({
     name: new FormControl(this.data.name),
     fname: new FormControl(this.data.fname),
@@ -181,7 +188,9 @@ export class DialogUser {
     status: new FormControl(this.status[this.data.status].id),
   })
 
-  constructor(private userComponent: UsersComponent,public dialogRef: MatDialogRef<DialogUser>,
+  constructor(private userComponent: UsersComponent,
+              public dialogRef: MatDialogRef<DialogUser>,
+              private httpService: HttpService,
               @Inject(MAT_DIALOG_DATA) public data: User,
   ) { }
 
@@ -190,22 +199,25 @@ export class DialogUser {
   }
 
   send(form: FormGroup) {
-    console.log(form);
-    let sendData = {} ;
-    if (form.controls['name'].pristine === false) {
-      // console.log(form.controls['name'].value);
-      sendData = {name: form.controls['name'].value}
+    let formV = {
+      id: this.data.id,
+      name: form.controls['name'].value,
+      fname: form.controls['fname'].value,
+      mname: form.controls['mname'].value,
+      status: form.controls['status'].value
     }
 
-    console.log(sendData);
+    this.httpService.updateUser(formV).subscribe({
+      next: (data) => {console.log('data - ', data)
+      if (data.status === 200) {
+        this.dialogRef.close();
+      } else {
+        console.log('Ошибка обновления');
 
-    for (let i in form) {
-      let team = form.value[i]
-      // Ниже условие фильтрации
-      // if (team.controls.pristine === false) {
-        console.log(team);
-
-      // }
+      }
+    },
+    error: (err) => {console.log(err);
     }
+  });
   }
 }

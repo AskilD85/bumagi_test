@@ -49,9 +49,6 @@ export class HttpService {
   }
 
   updateUser(data: User) {
-    const headers = new HttpHeaders({});
-    const formData: FormData = new FormData();
-    formData.append('body', JSON.stringify(data));
-    return this.http.patch(`${this.url}/users/${data.id}`, data);
+    return this.http.patch(`${this.url}/users/${data.id}`, data, {observe: 'response' });
   }
 }
