@@ -7,7 +7,8 @@ export class User {
   foto_url?: string;
   full_name?:string;
   balance?:string|number;
-  last_update?:string;
+  lastUpdatedAt?: Date | string;
+  message?: string;
   constructor (id:number,name:string,fname:string,mname:string,status: number) {
     this.id = id;
     this.name = name;
