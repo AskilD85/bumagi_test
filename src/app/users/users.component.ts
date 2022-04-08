@@ -86,8 +86,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     .subscribe({
            next: (data: any) => {
 
-            if (data['message'] ) {
-                this.errorMsg = data['message']
+            if (data.message ) {
+                this.errorMsg = data.message
 
                 this.stopUpdate()
                 setTimeout(
@@ -95,7 +95,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                   , 5000)
 
             } else {
-              this.fakeUsers = data.sort( (a: any, b: any) => a.id < b.id ? 1 : -1);
+              this.fakeUsers = data.sort( (a: User, b: User) => a.id < b.id ? 1 : -1);
               this.errorMsg = '';
               this.showSpinner = false;
               this.firstTimeCall === 1;
@@ -180,7 +180,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 export class DialogUser {
   status = this.userComponent.status;
   errorMsg = ''
-  FormData: any;
   form : FormGroup = new FormGroup({
     name: new FormControl(this.data.name),
     fname: new FormControl(this.data.fname),
