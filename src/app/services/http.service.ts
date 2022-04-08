@@ -33,7 +33,12 @@ export class HttpService {
   }
 
   getToken() {
+    this.auth_token = localStorage.getItem('token')
     return this.auth_token
+  }
+
+  isLoggedIn() {
+    return !!localStorage.getItem('token')
   }
 
   logout() {

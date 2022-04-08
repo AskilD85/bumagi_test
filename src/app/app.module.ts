@@ -16,13 +16,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthGuard } from './users/auth.guard';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UsersComponent,
-    DialogUser
+    DialogUser,
+    ErrorPageComponent
   ],
   imports: [
     MatIconModule,
@@ -43,6 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

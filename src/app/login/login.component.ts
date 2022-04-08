@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('login');
+    // if (this.httpService.isLoggedIn()) {this.router.navigate(['/users'])}
   }
 
   sendForm(){
