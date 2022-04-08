@@ -258,6 +258,18 @@ mat-icon {
   position: absolute;
   font-size: 18px;
 }
+
+.dialog-errorMsg{
+  padding: 20px;
+  display: inline-block;
+  min-width: 916px;
+  margin: auto;
+  position: absolute;
+  text-align: center;
+  &_text {
+    color: red;
+  }
+}
 /*  /errorMsg   */
 
 

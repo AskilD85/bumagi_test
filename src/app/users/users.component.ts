@@ -32,7 +32,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     statusControl : new FormControl(this.status[0].value)
   });
-  user$: EventEmitter<User[]> = new EventEmitter();
   usersParam: number | null = null;
   fakeUsers: User[] = [];
   sInterval! :Subscription;
@@ -46,8 +45,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.showSpinner = true;
-
-    // this.user$.subscribe((data) => this.fakeUsers = data)
 
     this.sOpenDialog = this.isOpenDial.subscribe(
       (data) => {
@@ -84,9 +81,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getUsers(param: number | null){
     this.errorMsg = '';
-    // this.fakeUsers = this.users;
-    console.log('param', param);
-
     this.httpService.getUsers(param)
     .subscribe({
            next: (data: any) => {
@@ -96,13 +90,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
                 this.stopUpdate()
                 setTimeout(
-                  () => { console.log('setTimeout');
-                    this.getUsers(param)}
+                  () => { this.getUsers(param)}
                   , 5000)
             } else {
               this.fakeUsers = data.sort( (a: any, b: any) => a.id < b.id ? 1 : -1);
-              // this.user$.emit(data.sort((a: any, b: any) => a.id < b.id ? 1 : -1));
-              // this.fakeUsers = this.users;
 
               this.errorMsg = '';
               this.showSpinner = false;
@@ -116,9 +107,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             console.log(err);
             this.stopUpdate()
           }
-  });
-
-
+    });
   }
 
   stopUpdate() {
@@ -150,7 +139,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsers(this.usersParam);
   }
 
-  openDialog(data: User | any): void {
+  openDialog(data: User): void {
 
     this.isOpenDial.next(true)
       const dialogRef = this.dialog.open(DialogUser, {
@@ -159,17 +148,25 @@ export class UsersComponent implements OnInit, OnDestroy {
       data: data,
     });
 
-    dialogRef.afterClosed().subscribe((result:FormGroup) => {
-      // this.updateUser(result)
-      console.log('данные при закрытии диалогового окна ', result);
-
+    dialogRef.afterClosed().subscribe((result:User) => {
       this.isOpenDial.next(false)
+      console.log(result);
+      this.fakeUsers.forEach((data) => {
+        if (data.id === result.id) {
+          console.log(data);
+          data.fname = result.fname
+          data.name = result.name
+          data.mname = result.mname
+          data.status = result.status
+        }
+      }
+      )
+      console.log(this.fakeUsers);
+
     });
   }
 
-  updateUser(controls: FormGroup) {
-    let result = {}
-  }
+
 }
 
 
@@ -180,6 +177,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 })
 export class DialogUser {
   status = this.userComponent.status;
+  errorMsg = ''
   FormData: any;
   form : FormGroup = new FormGroup({
     name: new FormControl(this.data.name),
@@ -210,10 +208,10 @@ export class DialogUser {
     this.httpService.updateUser(formV).subscribe({
       next: (data) => {console.log('data - ', data)
       if (data.status === 200) {
-        this.dialogRef.close();
+        this.dialogRef.close( formV);
       } else {
         console.log('Ошибка обновления');
-
+        this.errorMsg = 'Ошибка обновления'
       }
     },
     error: (err) => {console.log(err);

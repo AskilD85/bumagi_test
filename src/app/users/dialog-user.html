@@ -31,9 +31,12 @@
 </div>
 
 
+<div class="dialog-errorMsg" *ngIf="errorMsg">
+  <div class="dialog-errorMsg_text">{{errorMsg}}</div>
+</div>
 
 <div class="footer">
   <div class="save-button2">
-    <button class="btn save-button"   type="submit"  (click)="send(form)" >Сохранить</button>
+    <button class="btn save-button"   type="submit"  (click)="send(form)" [disabled] = form.pristine >Сохранить</button>
   </div>
 </div>
