@@ -36,6 +36,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   fakeUsers: User[] = [];
   sInterval! :Subscription;
   sOpenDialog!: Subscription;
+  sGetUser!: Subscription;
   showSpinner = false;
   selectedTab:number = 0;
   tabs = ['Все', 'Заблокированные', 'Активные'];
@@ -81,7 +82,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getUsers(param: number | null){
     this.errorMsg = '';
-    this.httpService.getUsers(param)
+    this.sGetUser = this.httpService.getUsers(param)
     .subscribe({
            next: (data: any) => {
 
@@ -112,6 +113,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   stopUpdate() {
     console.log('this.stopUpdate()');
+    if (this.sGetUser) {
+      this.sGetUser.unsubscribe()
+    }
     if (this.sInterval) {
       this.sInterval.unsubscribe()
     }
