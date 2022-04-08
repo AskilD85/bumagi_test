@@ -93,9 +93,9 @@ export class UsersComponent implements OnInit, OnDestroy {
                 setTimeout(
                   () => { this.getUsers(param)}
                   , 5000)
+
             } else {
               this.fakeUsers = data.sort( (a: any, b: any) => a.id < b.id ? 1 : -1);
-
               this.errorMsg = '';
               this.showSpinner = false;
               this.firstTimeCall === 1;
@@ -112,7 +112,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   stopUpdate() {
-    console.log('this.stopUpdate()');
     if (this.sGetUser) {
       this.sGetUser.unsubscribe()
     }
@@ -154,7 +153,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result:User) => {
       this.isOpenDial.next(false)
-      console.log(result);
       this.fakeUsers.forEach((data) => {
         if (data.id === result.id) {
           console.log(data);
